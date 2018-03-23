@@ -31,8 +31,8 @@ from wstore.charging_engine.payment_client.payment_client import PaymentClient
 from wstore.ordering.errors import PaymentError
 
 # Paypal credentials
-PAYPAL_CLIENT_ID = ''
-PAYPAL_CLIENT_SECRET = ''
+PAYPAL_CLIENT_ID = 'AdQVjEx5-_sdUUsxbUzeDOKb4e3GxRvuSaz_UPOHsrbr7XZffPZakeeJFi0UL-ZLYzqYGLfO7mJJHf-l'
+PAYPAL_CLIENT_SECRET = 'EGlWcd1tEKBWoIc3Lm7QBaP8nWAKswKb32EuXHnYz_g40FPxzbq6nipJ_F3gLb-Uu_MaWSZOL4Pqtnkl'
 MODE = 'sandbox'  # sandbox or live
 
 

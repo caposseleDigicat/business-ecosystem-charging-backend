@@ -23,6 +23,7 @@ from __future__ import unicode_literals
 from django.conf.urls import patterns, url
 
 from wstore.asset_manager import views as offering_views
+from wstore.token import views as token_views
 from wstore.asset_manager.resource_plugins import views as plugins_views
 from wstore.ordering import views as ordering_views
 from wstore.charging_engine import views as charging_views
@@ -31,6 +32,8 @@ from wstore.reports import views as reports_views
 
 urlpatterns = patterns('',
     # API
+    url(r'^charging/api/token/?$', token_views.TokenCollection(permitted_methods=('POST',))),
+    url(r'^charging/api/token/read?$', token_views.TokenRead(permitted_methods=('POST',))),
     url(r'^charging/api/assetManagement/assets/?$', offering_views.AssetCollection(permitted_methods=('GET',))),
     url(r'^charging/api/assetManagement/assets/uploadJob/?$', offering_views.UploadCollection(permitted_methods=('POST',))),
     url(r'^charging/api/assetManagement/assets/validateJob/?$', offering_views.ValidateCollection(permitted_methods=('POST',))),

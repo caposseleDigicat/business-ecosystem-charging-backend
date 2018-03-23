@@ -11,7 +11,7 @@ services:
                 aliases:
                     - charging.docker
         volumes:
-            #- ./charging-src:/business-ecosystem-charging-backend/src
+            - ./charging-src:/business-ecosystem-charging-backend/src
             - ./charging-bills:/business-ecosystem-charging-backend/src/media/bills
             - ./charging-assets:/business-ecosystem-charging-backend/src/media/assets
             - ./charging-plugins:/business-ecosystem-charging-backend/src/plugins
