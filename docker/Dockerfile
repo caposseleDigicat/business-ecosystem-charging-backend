@@ -1,7 +1,5 @@
 FROM ubuntu:16.04
 
-MAINTAINER CoNWeT Lab. Universidad Politécnica de Madrid
-
 RUN apt-get update && apt-get install -y --fix-missing \
     gcc git wkhtmltopdf xvfb python2.7 python-pip \
     python-dev build-essential libssl-dev libffi-dev \
