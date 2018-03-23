@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --fix-missing \
     git clone https://github.com/caposseleDigicat/business-ecosystem-charging-backend.git && \
     pip install sh
 
-ENV VERSION angelo
+ENV VERSION Synchronicity
 
 WORKDIR business-ecosystem-charging-backend
 
