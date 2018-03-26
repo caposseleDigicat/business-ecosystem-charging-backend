@@ -18,8 +18,8 @@ services:
             - ./charging-settings:/business-ecosystem-charging-backend/src/user_settings
             #- ./charging-inst-plugins:/business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins
         environment:
-          - PAYPAL_CLIENT_ID=
-          - PAYPAL_CLIENT_SECRET=
+          - PAYPAL_CLIENT_ID='test'
+          - PAYPAL_CLIENT_SECRET='test'
 networks:
     main:
         external: true
