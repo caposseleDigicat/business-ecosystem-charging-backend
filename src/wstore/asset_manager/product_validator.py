@@ -38,7 +38,7 @@ from wstore.store_commons.rollback import rollback, downgrade_asset_pa, downgrad
 
 class ProductValidator(CatalogValidator):
 
-    def _get_asset_resouces(self, asset_t, url):
+    def _get_asset_resources(self, asset_t, url):
         # Search the asset type
         asset_type = ResourcePlugin.objects.get(name=asset_t)
 
@@ -67,13 +67,21 @@ class ProductValidator(CatalogValidator):
     @on_product_spec_validation
     def _validate_product(self, provider, asset_t, media_type, url):
 
-        asset_type, assets = self._get_asset_resouces(asset_t, url)
+        asset_type, assets = self._get_asset_resources(asset_t, url)
 
         if len(assets):
             # The asset is already registered
+            # Select the provider's asset
+            if len(assets) > 1:
+                asset = None
+                for assetIdx in len(assets):
+                    if(assets[assetIdx].provider == provider):
+                        asset = assets[assetIdx]
+            else:
             asset = assets[0]
-
-            if asset.product_id is not None:
+            
+            if asset is not None:
+                if asset.product_id is not None:
                 raise ConflictError('There is already an existing product specification defined for the given digital asset')
 
             self._validate_product_characteristics(asset, provider, asset_t, media_type)
@@ -197,12 +205,21 @@ class ProductValidator(CatalogValidator):
         asset.save()
 
     def _get_upgrading_asset(self, asset_t, url, product_id):
-        asset_type, assets = self._get_asset_resouces(asset_t, url)
+        asset_type, assets = self._get_asset_resources(asset_t, url)
 
         if not len(assets):
             raise ProductError('The URL specified in the location characteristic does not point to a valid digital asset')
 
+        # Select the provider's asset
+        if len(assets) > 1:
+            asset = None
+            for assetIdx in len(assets):
+                if(assets[assetIdx].product_id == product_id):
+                    asset = assets[assetIdx]
+        else:
         asset = assets[0]
+
+        
         # Lock the access to the asset
         lock = DocumentLock('wstore_resource', asset.pk, 'asset')
         lock.wait_document()
@@ -263,9 +280,17 @@ class ProductValidator(CatalogValidator):
         is_digital = asset_t is not None and media_type is not None and url is not None
 
         if is_digital:
-            asset_type, assets = self._get_asset_resouces(asset_t, url)
+            asset_type, assets = self._get_asset_resources(asset_t, url)
 
+            # Select the provider's asset
+            if len(assets) > 1:
+                asset = None
+                for assetIdx in len(assets):
+                    if(assets[assetIdx].provider == provider):
+                        asset = assets[assetIdx]
+            else:
             asset = assets[0]
+
             self._validate_product_characteristics(asset, provider, asset_t, media_type)
             rollback_method(asset)
 
