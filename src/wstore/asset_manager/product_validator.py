@@ -82,7 +82,7 @@ class ProductValidator(CatalogValidator):
             
             if asset is not None:
                 if asset.product_id is not None:
-                raise ConflictError('There is already an existing product specification defined for the given digital asset')
+                    raise ConflictError('There is already an existing product specification defined for the given digital asset')
 
             self._validate_product_characteristics(asset, provider, asset_t, media_type)
 
