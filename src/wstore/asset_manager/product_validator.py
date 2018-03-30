@@ -78,7 +78,7 @@ class ProductValidator(CatalogValidator):
                     if(assets[assetIdx].provider == provider):
                         asset = assets[assetIdx]
             else:
-            asset = assets[0]
+                asset = assets[0]
             
             if asset is not None:
                 if asset.product_id is not None:
@@ -217,7 +217,7 @@ class ProductValidator(CatalogValidator):
                 if(assets[assetIdx].product_id == product_id):
                     asset = assets[assetIdx]
         else:
-        asset = assets[0]
+            asset = assets[0]
 
         
         # Lock the access to the asset
@@ -289,7 +289,7 @@ class ProductValidator(CatalogValidator):
                     if(assets[assetIdx].provider == provider):
                         asset = assets[assetIdx]
             else:
-            asset = assets[0]
+                asset = assets[0]
 
             self._validate_product_characteristics(asset, provider, asset_t, media_type)
             rollback_method(asset)
