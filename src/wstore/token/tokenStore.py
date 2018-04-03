@@ -24,14 +24,8 @@ class tokenStore:
 
     def __init__(self):
         self._db = get_database_connection()
-        #self._db.access_token.drop_index()
-        # self._db.access_token.create_index([('appId', ASCENDING), 
-        #                                     ('userId', ASCENDING)],
-        #                                     unique=True
-        #                                     )
 
     def push(self, data):
-        #key = data['appId'] + ":" + data['userId']
         res = self._db.access_token.find_one_and_update(
             filter={'appId': data['appId'],
                     'userId': data['userId']},
@@ -45,7 +39,6 @@ class tokenStore:
         return res
 
     def get(self, data):
-        #key = data['appId'] + ":" + data['userId']
         res = self._db.access_token.find_one(
             filter={'appId': data['appId'],
                     'userId': data['userId']}

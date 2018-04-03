@@ -52,7 +52,7 @@ class TokenCollection(Resource):
         :return: JSON containing the new OAuth2 token
         """
         response = {}
-        proxy_url = "http://proxy.docker:8004/authorizeservice"
+        #proxy_url = "http://proxy.docker:8004/authorizeservice"
         m_token = str(request.META.get('HTTP_AUTHORIZATION'))
         m_token = m_token.replace('Bearer ', '')
         body = json.loads(request.body)        
@@ -63,7 +63,7 @@ class TokenCollection(Resource):
             return build_response(request, 400, 'Invalid request')
 
         #token_store = tokenStore()
-        keystone_client = KeystoneClient(KEYSTONE_USER, KEYSTONE_PWD, ADMIN_DOMAIN, 'http', 'idm.docker')
+        keystone_client = KeystoneClient(KEYSTONE_USER, KEYSTONE_PWD, ADMIN_DOMAIN, KEYSTONE_PROTOCOL, KEYSTONE_HOST, KEYSTONE_PORT)
 
         try:
             token_info = keystone_client.get_token_info(m_token)
@@ -126,7 +126,7 @@ class TokenRead(Resource):
             return build_response(request, 400, 'Invalid request')
         
         token_store = tokenStore()
-        keystone_client = KeystoneClient(KEYSTONE_USER, KEYSTONE_PWD, ADMIN_DOMAIN, 'http', 'idm.docker')
+        keystone_client = KeystoneClient(KEYSTONE_USER, KEYSTONE_PWD, ADMIN_DOMAIN, KEYSTONE_PROTOCOL, KEYSTONE_HOST, KEYSTONE_PORT)
 
         try:
             token_info = keystone_client.get_token_info(m_token)
