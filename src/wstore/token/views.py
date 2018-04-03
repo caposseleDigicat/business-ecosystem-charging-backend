@@ -52,7 +52,7 @@ class TokenCollection(Resource):
         :return: JSON containing the new OAuth2 token
         """
         response = {}
-        #proxy_url = "http://proxy.docker:8004/authorizeservice"
+        proxy_url = AUTHORIZE_SERVICE
         m_token = str(request.META.get('HTTP_AUTHORIZATION'))
         m_token = m_token.replace('Bearer ', '')
         body = json.loads(request.body)        
@@ -79,7 +79,7 @@ class TokenCollection(Resource):
                 return build_response(request, 401, 'username does not match authentication')
             
             authorization = "Basic " + str(base64.b64encode(APP_CLIENT_ID + ":" + APP_CLIENT_SECRET))
-            url = KEYSTONE_HOST + ":" + KEYROCK_PORT + "/oauth2/token"
+            url = KEYSTONE_PROTOCOL + '://' + KEYSTONE_HOST + ":" + KEYROCK_PORT + "/oauth2/token"
             data = "grant_type=password&username=" + username + "&password=" + password
             headers = {'Content-type': 'application/x-www-form-urlencoded', 'Authorization': authorization}
             r = requests.post(url, data=data, headers=headers)
@@ -97,7 +97,7 @@ class TokenCollection(Resource):
             }
 
             headers = {'Content-type': 'application/json', 'Authorization': str(request.META.get('HTTP_AUTHORIZATION'))}
-            acc_resp = requests.post(proxy_url + '/token', json=acc_json, headers=headers)
+            acc_resp = requests.post(proxy_url, json=acc_json, headers=headers)
 
             if acc_resp.status_code != 200:
                 return build_response(request, 500, 'The accounting service has failed saving the token')
