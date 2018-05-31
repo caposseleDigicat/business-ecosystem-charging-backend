@@ -59,6 +59,7 @@ class TokenCollection(Resource):
         try:
             username = body['username']
             password = body['password']
+            application_id = body['appId']
         except Exception as e:
             return build_response(request, 400, 'Invalid request')
 
@@ -77,8 +78,15 @@ class TokenCollection(Resource):
             
             if token_info['id'] != user_id:
                 return build_response(request, 401, 'username does not match authentication')
+
+            application_info = keystone_client.get_application_by_id(application_id)
+            if 'consumer' in application_info:
+                client_secret = application_info.consumer.secret
+            else:
+                return build_response(request, 404, 'application does not exist')
             
-            authorization = "Basic " + str(base64.b64encode(APP_CLIENT_ID + ":" + APP_CLIENT_SECRET))
+            #authorization = "Basic " + str(base64.b64encode(APP_CLIENT_ID + ":" + APP_CLIENT_SECRET))
+            authorization = "Basic " + str(base64.b64encode(application_id + ":" + client_secret))
             url = KEYSTONE_PROTOCOL + '://' + KEYSTONE_HOST + ":" + KEYROCK_PORT + "/oauth2/token"
             data = "grant_type=password&username=" + username + "&password=" + password
             headers = {'Content-type': 'application/x-www-form-urlencoded', 'Authorization': authorization}
@@ -89,7 +97,7 @@ class TokenCollection(Resource):
                 return build_response(request, 401, 'Invalid password')
             # Send the API key to the proxy using the authorizing API
             acc_json = {
-                'appId': APP_CLIENT_ID,
+                'appId': application_id,
                 'userId': user_id,
                 'authToken': r.json()['access_token'],
                 'refreshToken': r.json()['refresh_token'],
