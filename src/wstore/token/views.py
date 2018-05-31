@@ -81,7 +81,7 @@ class TokenCollection(Resource):
 
             application_info = keystone_client.get_application_by_id(application_id)
             if 'consumer' in application_info:
-                client_secret = application_info.consumer.secret
+                client_secret = application_info['consumer']['secret']
             else:
                 return build_response(request, 404, 'application does not exist')
             
