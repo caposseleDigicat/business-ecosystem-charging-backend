@@ -33,6 +33,7 @@ from wstore.reports import views as reports_views
 urlpatterns = patterns('',
     # API
     url(r'^charging/api/token/?$', token_views.TokenCollection(permitted_methods=('POST',))),
+    url(r'^charging/api/token/refresh?$', token_views.TokenRefresh(permitted_methods=('POST',))),
     url(r'^charging/api/token/read?$', token_views.TokenRead(permitted_methods=('POST',))),
     url(r'^charging/api/assetManagement/assets/?$', offering_views.AssetCollection(permitted_methods=('GET',))),
     url(r'^charging/api/assetManagement/assets/uploadJob/?$', offering_views.UploadCollection(permitted_methods=('POST',))),

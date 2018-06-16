@@ -119,6 +119,50 @@ class TokenCollection(Resource):
 
         return HttpResponse(json.dumps(response), status=200, mimetype='application/json; charset=utf-8')
 
+class TokenRefresh(Resource):
+    @supported_request_mime_types(('application/json'))
+    def create(self, request):
+        """
+        Creates a new OAuth2 token
+        :param request: refresh token and application id
+        :return: JSON containing the new OAuth2 token
+        """
+        response = {}
+        #proxy_url = AUTHORIZE_SERVICE       
+        try:
+            body = json.loads(request.body) 
+            refreshToken = body['refresh_token']
+            application_id = body['appId']
+        except Exception as e:
+            return build_response(request, 400, 'Invalid request')
+
+        #token_store = tokenStore()
+        keystone_client = KeystoneClient(KEYSTONE_USER, KEYSTONE_PWD, ADMIN_DOMAIN, KEYSTONE_PROTOCOL, KEYSTONE_HOST, KEYSTONE_PORT)
+
+        try:
+            application_info = keystone_client.get_application_by_id(application_id)
+            if 'consumer' in application_info:
+                client_secret = application_info['consumer']['secret']
+            else:
+                return build_response(request, 404, 'application does not exist')
+            
+            #authorization = "Basic " + str(base64.b64encode(APP_CLIENT_ID + ":" + APP_CLIENT_SECRET))
+            authorization = "Basic " + str(base64.b64encode(application_id + ":" + client_secret))
+            url = KEYSTONE_PROTOCOL + '://' + KEYSTONE_HOST + ":" + KEYROCK_PORT + "/oauth2/token"
+            data = "grant_type=refresh_token&refresh_token=" + refreshToken
+            headers = {'Content-type': 'application/x-www-form-urlencoded', 'Authorization': authorization}
+            r = requests.post(url, data=data, headers=headers)
+
+            #Check if token has been correctly refreshed
+            if r.status_code != 200:
+                return build_response(request, 401, 'Invalid refresh token')
+            
+            response = r.json()
+        except Exception as e:
+            return build_response(request, 500, unicode(e))
+
+        return HttpResponse(json.dumps(response), status=200, mimetype='application/json; charset=utf-8')
+
 class TokenRead(Resource):
     @supported_request_mime_types(('application/json'))
     @authentication_required

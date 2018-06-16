@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y --fix-missing \
     git clone https://github.com/caposseleDigicat/business-ecosystem-charging-backend.git && \
     pip install sh
 
-ENV VERSION Synchronicity
+#ENV VERSION Synchronicity
+ENV VERSION multiple_broker
 
 WORKDIR business-ecosystem-charging-backend
 
