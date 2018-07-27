@@ -86,6 +86,16 @@ RSS_HOST=`grep "RSS =.*" ./user_settings/services_settings.py | grep -o "://.*:"
 RSS_PORT=`grep "RSS =.*" ./user_settings/services_settings.py | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
 test_connection "RSS" ${RSS_HOST} ${RSS_PORT}
 
+echo "Installing Orion Plugin"
+/business-ecosystem-charging-backend/src/manage.py loadplugin /business-ecosystem-charging-backend/src/plugins/Orion.zip
+
+mkdir /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query
+
+touch /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query/__init__.py
+
+cp /business-ecosystem-charging-backend/src/plugins/orion-query/* /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query/
+
+
 echo "Starting charging server"
 service apache2 restart
 

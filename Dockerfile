@@ -1,24 +1,20 @@
-FROM ubuntu:16.04
-
-ENV VERSION no-cache1
+FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y --fix-missing \
-    gcc git wkhtmltopdf xvfb python2.7 python-pip \
+    gcc wkhtmltopdf xvfb python2.7 python-pip \
     python-dev build-essential libssl-dev libffi-dev \
     apache2 libapache2-mod-wsgi && \
-    git clone https://github.com/caposseleDigicat/business-ecosystem-charging-backend.git && \
+    #git clone https://github.com/caposseleDigicat/business-ecosystem-charging-backend.git && \
     pip install sh
-
-#ENV VERSION Synchronicity
-ENV VERSION multiple_broker
 
 WORKDIR business-ecosystem-charging-backend
 
-RUN git checkout $VERSION && \
-    mkdir ./src/media && \
+COPY / ./
+
+RUN mkdir ./src/media && \
     mkdir ./src/media/bills && \
     mkdir ./src/media/assets && \
-    mkdir ./src/plugins && \
+    #mkdir ./src/plugins && \
     mkdir ./src/user_settings
 
 ENV WORKSPACE=`pwd`
@@ -38,17 +34,17 @@ VOLUME /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_pl
 WORKDIR src
 
 RUN rm wsgi.py
-COPY wsgi.py .
+COPY /docker/wsgi.py .
 
 WORKDIR /etc/apache2/
-COPY charging.conf ./sites-available
+COPY /docker/charging.conf ./sites-available
 
 RUN ln -s ../sites-available/charging.conf ./sites-enabled/charging.conf && \
     sed -i "s|Listen 80|Listen 8006|g" ports.conf
 
 WORKDIR /business-ecosystem-charging-backend/src
 
-COPY ./entrypoint.sh /
+COPY /docker/entrypoint.sh /
 
 EXPOSE 8006
 
