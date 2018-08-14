@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --fix-missing \
     apache2 libapache2-mod-wsgi && \
     #git clone https://github.com/caposseleDigicat/business-ecosystem-charging-backend.git && \
     pip install sh
+RUN apt-get install -y wget
 
 WORKDIR business-ecosystem-charging-backend
 
