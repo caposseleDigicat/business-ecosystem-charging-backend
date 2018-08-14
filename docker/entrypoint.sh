@@ -86,6 +86,31 @@ RSS_HOST=`grep "RSS =.*" ./user_settings/services_settings.py | grep -o "://.*:"
 RSS_PORT=`grep "RSS =.*" ./user_settings/services_settings.py | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
 test_connection "RSS" ${RSS_HOST} ${RSS_PORT}
 
+################### TEST APIS CONNECTION FIRST #######################
+# Get glassfish host and port from config
+INVENTORY_HOST=`grep "INVENTORY =.*" ./user_settings/services_settings.py | grep -o "://.*:" | grep -oE "[^:/]+"`
+INVENTORY_PORT=`grep "INVENTORY =.*" ./user_settings/services_settings.py | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
+test_connection 'INVENTORY' ${INVENTORY_HOST} ${INVENTORY_PORT}
+
+#GLASSFISH_HOST=`/business-ecosystem-logic-proxy/node-v6.9.1-linux-x64/bin/node getConfig glasshost`
+#GLASSFISH_PORT=`/business-ecosystem-logic-proxy/node-v6.9.1-linux-x64/bin/node getConfig glassport`
+
+INVENTORY_PATH = `DSProductInventory`
+
+echo "Testing Glasfish APIs deployed"
+wget http://${INVENTORY_HOST}:${INVENTORY_PORT}/${INVENTORY_PATH}
+STATUS=$?
+I=0
+while [[ ${STATUS} -ne 0  && ${I} -lt 50 ]]; do
+    echo "Glassfish APIs not deployed yet, retrying in 5 seconds..."
+
+    sleep 5
+    wget http://${INVENTORY_HOST}:${INVENTORY_PORT}/${INVENTORY_PATH}
+    STATUS=$?
+
+    I=${I}+1
+done
+
 echo "Installing Orion Plugin"
 /business-ecosystem-charging-backend/src/manage.py loadplugin /business-ecosystem-charging-backend/src/plugins/Orion.zip
 
