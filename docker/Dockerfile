@@ -22,6 +22,8 @@ RUN mkdir ./src/media && \
     #mkdir ./src/plugins && \
     mkdir ./src/user_settings
 
+RUN chmod -R 777 ./src/media
+
 ENV WORKSPACE=`pwd`
 RUN ./python-dep-install.sh && \
 RUN echo "from user_settings.settings import *" > ./src/settings.py
