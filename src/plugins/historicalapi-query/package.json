@@ -1,0 +1,35 @@
+{
+  "name": "HistoricalAPI Query",
+  "author": "acapossele",
+  "version": "1.0",
+  "module": "historical_plugin.HistoricalPlugin",
+  "media_types": ["NGSI-LD"],
+  "formats": ["URL"],
+  "overrides": [],
+  "form": {
+    "idPattern": {
+      "type": "text",
+      "label": "idPattern (e.g., urn:ngsi-ld:OnStreetParking:santander:parking:onStreet:StaLuciaEast)",
+      "placeholder": "idPattern",
+      "mandatory": true
+    },
+    "application_id": {
+      "type": "text",
+      "label": "Application ID (Client ID registered on the IDM, e.g., 1161ee85e21246e2b940b07e5018b1f0)",
+      "placeholder": "Application ID",
+      "mandatory": true
+    },
+    "service": {
+      "type": "text",
+      "label": "Fiware-Service (e.g., TenantRZ1)",
+      "placeholder": "Fiware-Service",
+      "mandatory": false
+    },
+    "servicePath": {
+      "type": "text",
+      "label": "Fiware-ServicePath (e.g., /)",
+      "placeholder": "Fiware-ServicePath",
+      "mandatory": false
+    }
+  }
+}

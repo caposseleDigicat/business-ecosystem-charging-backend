@@ -121,6 +121,17 @@ touch /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plu
 cp /business-ecosystem-charging-backend/src/plugins/orion-query/* /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query/
 
 
+echo "Installing HistoricalAPI Plugin"
+/business-ecosystem-charging-backend/src/manage.py loadplugin /business-ecosystem-charging-backend/src/plugins/Historical.zip
+
+mkdir /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query
+
+touch /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query/__init__.py
+
+cp /business-ecosystem-charging-backend/src/plugins/historicalapi-query/* /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query/
+
+
+
 echo "Starting charging server"
 service apache2 restart
 
