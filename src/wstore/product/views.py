@@ -64,11 +64,12 @@ class ProductSpecification(Resource):
         body = json.loads(request.body)        
             
         data_source_id = body['dataSourceID']
+        fiware_service_body = body['fiwareService']
             
         
         #token_store = tokenStore()
         keystone_client = KeystoneClient(KEYSTONE_USER, KEYSTONE_PWD, ADMIN_DOMAIN, KEYSTONE_PROTOCOL, KEYSTONE_HOST, KEYSTONE_PORT)
-        url = APP_URL + data_source_id + '?type=ttn-device'
+        url = APP_URL + '?id=' + data_source_id + '&type=ttn-device'
         try:
             token_info = keystone_client.get_token_info(m_token)        
             headers = {'Content-type': 'application/json', 'Authorization': 'Bearer ' + m_token}
@@ -107,7 +108,9 @@ class ProductSpecification(Resource):
             appId = product_spec.appId
             appId['productSpecCharacteristicValue'][0]['value'] = APP_CLIENT_ID
 
-            pr_sp["productSpecCharacteristic"] = [fiware_service, asset_type, media_type, location, appId]
+            fiware_service['productSpecCharacteristicValue'][0]['value'] = fiware_service_body
+
+            pr_sp["productSpecCharacteristic"] = [asset_type, media_type, location, appId, fiware_service]
             validation["product"] = pr_sp
 
             pr_sp["relatedParty"][0]["id"] = token_info["id"]
