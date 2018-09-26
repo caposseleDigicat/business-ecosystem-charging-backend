@@ -54,15 +54,15 @@ from wstore.asset_manager.resource_plugins.plugin_error import PluginError
 from wstore.store_commons.errors import ConflictError
 
 from .config import *
-from .keystone_client import KeystoneClient
+from wstore.token.keystone_client import KeystoneClient
 import json
 
 class HistoricalPlugin(Plugin):
 
-    def _pack_json_role(self, name, application_id):
+    def _pack_json_role(self, name):
         data = json.dumps({'role' : {
-                            'name' : name, 
-                            'application_id' : application_id}})
+                            'name' : name
+                            })
         return json.loads(data)
 
     def _get_user_id(self, keystone_client, domain_id, username):
@@ -105,17 +105,17 @@ class HistoricalPlugin(Plugin):
             # Check that provided application exists
             application_info = keystone_client.get_application_by_id(asset.meta_info['application_id'])
 
-            if not len(application_info['consumer']):
+            if not 'application' in application_info:
                 raise ObjectDoesNotExist('The Application ' + asset.meta_info['application_id'] + ' could not be found')
 
             application_id = asset.meta_info['application_id']
             
-            domain_id = keystone_client.get_domain_id(ADMIN_DOMAIN)
-            provider_id = provider.name #self._get_user_id(keystone_client, domain_id, provider.name)
+            #domain_id = keystone_client.get_domain_id(ADMIN_DOMAIN)
+            provider_id = keystone_client.get_user_by_username(provider.name) #self._get_user_id(keystone_client, domain_id, provider.name)
         
             #provider_role_name = service + ":provider"
             provider_role_name = "data_provider"
-            provider_role_id = keystone_client.get_role_id_by_name(application_id, provider_role_name)
+            provider_role_id = keystone_client.get_role_by_name(application_id, provider_role_name)
         except HTTPError:
             raise PluginError('It has not been possible to connect with Keystone')
         
@@ -160,9 +160,9 @@ class HistoricalPlugin(Plugin):
             #role_name = service + ':' + resource
             #end_point = asset.download_link + '/v2/entities/' + '<entity_id>/' + 'attrs/' + '<attribute>'
             role_name = service + '|' + 'GET' + '|' + resource_type  + '|' + resource + '|'
-            json_role = self._pack_json_role(role_name, application_id)
-            if not (keystone_client.get_role_id_by_name(application_id, role_name)):
-                role = keystone_client.create_role(json_role)
+            json_role = self._pack_json_role(role_name)
+            if not (keystone_client.get_role_by_name(application_id, role_name)):
+                role = keystone_client.create_role(application_id, json_role)
 
         except HTTPError as e:
             raise PluginError(e)
@@ -232,7 +232,7 @@ class HistoricalPlugin(Plugin):
             # Check the customer user
             customer_id = order.owner_organization.name#self._get_user_id(keystone_client, asset.meta_info['domain_id'], order.owner_organization.name)
 
-            role_id = keystone_client.get_role_id_by_name(asset.meta_info['application_id'], asset.meta_info['role'])
+            role_id = keystone_client.get_role_by_name(asset.meta_info['application_id'], asset.meta_info['role'])
             if role_id:
                 # Give the user the new role
                 keystone_client.grant_role(asset.meta_info['application_id'], customer_id, role_id)

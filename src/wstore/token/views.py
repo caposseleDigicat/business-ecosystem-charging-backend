@@ -68,20 +68,18 @@ class TokenCollection(Resource):
 
         try:
             token_info = keystone_client.get_token_info(m_token)
-            user_info = keystone_client.get_user_by_name(username)
+            user_id = keystone_client.get_user_by_username(username)
     
-            if not len(user_info['users']):
+            if not user_id:
                 return build_response(request, 401, 'Invalid username')
             
-            for user in user_info['users']:
-                user_id = user['id']
             
             if token_info['id'] != user_id:
                 return build_response(request, 401, 'username does not match authentication')
 
             application_info = keystone_client.get_application_by_id(application_id)
-            if 'consumer' in application_info:
-                client_secret = application_info['consumer']['secret']
+            if 'application' in application_info:
+                client_secret = application_info['application']['secret']
             else:
                 return build_response(request, 404, 'application does not exist')
             
@@ -141,8 +139,8 @@ class TokenRefresh(Resource):
 
         try:
             application_info = keystone_client.get_application_by_id(application_id)
-            if 'consumer' in application_info:
-                client_secret = application_info['consumer']['secret']
+            if 'application' in application_info:
+                client_secret = application_info['application']['secret']
             else:
                 return build_response(request, 404, 'application does not exist')
             
@@ -182,13 +180,10 @@ class TokenRead(Resource):
 
         try:
             token_info = keystone_client.get_token_info(m_token)
-            user_info = keystone_client.get_user_by_username(userId)
+            user_id = keystone_client.get_user_by_username(userId)
     
-            if not len(user_info['users']):
+            if not user_id:
                 return build_response(request, 401, 'Invalid username')
-            
-            for user in user_info['users']:
-                user_id = user['id']
             
             if token_info['id'] != user_id:
                 return build_response(request, 401, 'username does not match authentication')

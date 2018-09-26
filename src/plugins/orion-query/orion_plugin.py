@@ -35,7 +35,7 @@ from wstore.asset_manager.resource_plugins.plugin_error import PluginError
 from wstore.store_commons.errors import ConflictError
 
 from .config import *
-from .keystone_client import KeystoneClient
+from wstore.token.keystone_client import KeystoneClient
 import json
 
 class OrionPlugin(Plugin):
@@ -71,7 +71,7 @@ class OrionPlugin(Plugin):
             # Check that provided application exists
             application_info = keystone_client.get_application_by_id(asset.meta_info['application_id'])
 
-            if not len(application_info['consumer']):
+            if not len(application_info['application']):
                 raise ObjectDoesNotExist('The Application ' + asset.meta_info['application_id'] + ' could not be found')
 
             application_id = asset.meta_info['application_id']
@@ -81,7 +81,7 @@ class OrionPlugin(Plugin):
         
             #provider_role_name = service + ":provider"
             provider_role_name = "data_provider"
-            provider_role_id = keystone_client.get_role_id_by_name(application_id, provider_role_name)
+            provider_role_id = keystone_client.get_role_by_name(application_id, provider_role_name)
         except HTTPError:
             raise PluginError('It has not been possible to connect with Keystone')
         
@@ -118,7 +118,7 @@ class OrionPlugin(Plugin):
             #role_name = service + ':' + resource
             role_name = service + '|' + 'GET' + '|' + resource_type  + '|' + resource + '|' + attr
             json_role = self._pack_json_role(role_name, application_id)
-            if not (keystone_client.get_role_id_by_name(application_id, role_name)):
+            if not (keystone_client.get_role_by_name(application_id, role_name)):
                 role = keystone_client.create_role(json_role)
 
         except HTTPError as e:
@@ -184,7 +184,7 @@ class OrionPlugin(Plugin):
             # Check the customer user
             customer_id = order.owner_organization.name#self._get_user_id(keystone_client, asset.meta_info['domain_id'], order.owner_organization.name)
 
-            role_id = keystone_client.get_role_id_by_name(asset.meta_info['application_id'], asset.meta_info['role'])
+            role_id = keystone_client.get_role_by_name(asset.meta_info['application_id'], asset.meta_info['role'])
             if role_id:
                 # Give the user the new role
                 keystone_client.grant_role(asset.meta_info['application_id'], customer_id, role_id)

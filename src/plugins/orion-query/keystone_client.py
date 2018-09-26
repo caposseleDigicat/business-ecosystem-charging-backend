@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+""" # -*- coding: utf-8 -*-
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2018, Digital Catapult
@@ -128,3 +128,4 @@ class KeystoneClient:
         })
         resp.raise_for_status()  
         return resp
+ """
