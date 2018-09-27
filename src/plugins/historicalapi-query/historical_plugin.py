@@ -60,20 +60,22 @@ import json
 class HistoricalPlugin(Plugin):
 
     def _pack_json_role(self, name):
-        data = json.dumps({'role' : {
-                            'name' : name
-                            })
+        data = json.dumps(
+            {
+                'role' :  {'name' : name}
+            }
+        )
         return json.loads(data)
 
-    def _get_user_id(self, keystone_client, domain_id, username):
-        # Get provider and seller role ids
-        users = keystone_client.get_user_by_username(username)
-        user_info = [user for user in users['users'] if user['domain_id'] == domain_id]
+    # def _get_user_id(self, keystone_client, domain_id, username):
+    #     # Get provider and seller role ids
+    #     users = keystone_client.get_user_by_username(username)
+    #     user_info = [user for user in users['users'] if user['domain_id'] == domain_id]
 
-        if not len(user_info):
-            raise PluginError('Your user is not registered in the underlying Keystone instance')
+    #     if not len(user_info):
+    #         raise PluginError('Your user is not registered in the underlying Keystone instance')
 
-        return user_info[0]['id']
+    #     return user_info[0]['id']
 
     def on_post_product_spec_validation(self, provider, asset):
         # Extract related information from the asset
@@ -174,7 +176,7 @@ class HistoricalPlugin(Plugin):
         # asset.meta_info['entities'] = entities
         # asset.meta_info['attributes'] = attributes
         asset.meta_info['servicePath'] = servicePath
-        asset.meta_info['domain_id'] = domain_id
+        #asset.meta_info['domain_id'] = domain_id
         asset.meta_info['application_id'] = application_id
         #asset.download_link = end_point #asset.download_link + "/v2/entities/<entity_id>/attrs/<attribute_name>?type=" + entityType
         

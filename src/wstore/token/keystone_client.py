@@ -37,29 +37,13 @@ class KeystoneClient:
     def _login(self, user, password):
         url = self._server + '/v1/auth/tokens'
 
-        login_resp = requests.post(url, json=
-"""             {"auth": {
-                "identity": {
-                    "methods": [
-                        "password"
-                    ],
-                    "password": {
-                        "user": {
-                            "domain": {
-                                "name": self._domain
-                            },
-                            "name": user,
-                            "password": password
-                        }
-                    }
-                }
-            }
- """        
+        login_resp = requests.post(url, json= 
             {
             "name": user,
             "password": password
             }
-        })
+        )
+
 
         login_resp.raise_for_status()
         return login_resp.headers.get('X-Subject-Token', '')
@@ -78,10 +62,10 @@ class KeystoneClient:
     def get_application_by_id(self, application_id):
         return self._make_get_request(self._server + '/v1/applications/' + application_id)
 
-    def get_domain_id(self, domain_name):
-        resp = self._make_get_request(self._server + '/v3/domains?name=' + domain_name)
-        for domain_id in resp['domains']:
-            return domain_id['id']
+    # def get_domain_id(self, domain_name):
+    #     resp = self._make_get_request(self._server + '/v3/domains?name=' + domain_name)
+    #     for domain_id in resp['domains']:
+    #         return domain_id['id']
     # def get_role_by_name(self, role_name):
     #     return self._make_get_request(self._server + '/v3/roles?name=' + role_name)
 
@@ -96,18 +80,18 @@ class KeystoneClient:
     #     return self._make_get_request(self._server + '/v3/users?name=' + username)
 
     def get_user_by_username(self, username):
-        res = self._make_get_request(self._server + '/v1/users)
+        res = self._make_get_request(self._server + '/v1/users')
         for user in res['users']:
             if user['username'] == username:
                return user['id'] 
         return None
     
     def get_token_info(self, token):
-        return self._make_get_request(self._server + '/v3/access-tokens/' + token)
+        return self._make_get_request(self._server + '/user?access-token=' + token)
 
     def check_role(self, application_id, user_id, role_id):
         #get roles for user on application
-        resp = self._make_get_request(self._server + '/v1/applications/'+application_id+'/users)
+        resp = self._make_get_request(self._server + '/v1/applications/'+application_id+'/users')
         for role in resp['role_user_assignments']:
             if role['user_id'] == user_id and role['role_id'] == role_id:
                 return True
@@ -123,13 +107,13 @@ class KeystoneClient:
 
 
     def grant_role(self, application_id, user_id, role_id):
-        resp = requests.put(self._server + '/v3/OS-ROLES/users/' + user_id + '/applications/' + application_id + '/roles/' + role_id, headers={
+        resp = requests.put(self._server + '/v1/applications/' + application_id + '/users' + user_id + '/roles/' + role_id, headers={
             'X-Auth-Token': self._access_token
         })
         resp.raise_for_status()
 
     def revoke_role(self, application_id, user_id, role_id):
-        resp = requests.delete(self._server + '/v3/OS-ROLES/users/' + user_id + '/applications/' + application_id + '/roles/' + role_id, headers={
+        resp = requests.delete(self._server + '/v1/applications/' + application_id + '/users' + user_id + '/roles/' + role_id, headers={
             'X-Auth-Token': self._access_token
         })
         resp.raise_for_status()  

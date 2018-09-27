@@ -46,15 +46,15 @@ class OrionPlugin(Plugin):
                             'application_id' : application_id}})
         return json.loads(data)
 
-    def _get_user_id(self, keystone_client, domain_id, username):
-        # Get provider and seller role ids
-        users = keystone_client.get_user_by_username(username)
-        user_info = [user for user in users['users'] if user['domain_id'] == domain_id]
+    # def _get_user_id(self, keystone_client, domain_id, username):
+    #     # Get provider and seller role ids
+    #     users = keystone_client.get_user_by_username(username)
+    #     user_info = [user for user in users['users'] if user['domain_id'] == domain_id]
 
-        if not len(user_info):
-            raise PluginError('Your user is not registered in the underlying Keystone instance')
+    #     if not len(user_info):
+    #         raise PluginError('Your user is not registered in the underlying Keystone instance')
 
-        return user_info[0]['id']
+    #     return user_info[0]['id']
 
     def on_post_product_spec_validation(self, provider, asset):
         # Extract related information from the asset
@@ -76,7 +76,7 @@ class OrionPlugin(Plugin):
 
             application_id = asset.meta_info['application_id']
             
-            domain_id = keystone_client.get_domain_id(ADMIN_DOMAIN)
+            #domain_id = keystone_client.get_domain_id(ADMIN_DOMAIN)
             provider_id = provider.name #self._get_user_id(keystone_client, domain_id, provider.name)
         
             #provider_role_name = service + ":provider"
@@ -127,7 +127,7 @@ class OrionPlugin(Plugin):
         # Save related metadata to avoid future requests
         asset.meta_info['role'] = role_name
         asset.meta_info['service'] = service
-        asset.meta_info['domain_id'] = domain_id
+        #asset.meta_info['domain_id'] = domain_id
         asset.meta_info['application_id'] = application_id
         
         asset.save()
