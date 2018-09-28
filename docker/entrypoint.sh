@@ -112,6 +112,9 @@ while [[ ${STATUS} -ne 0  && ${I} -lt 50 ]]; do
 done
 
 echo "Installing Orion Plugin"
+
+touch /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/__init__.py
+
 /business-ecosystem-charging-backend/src/manage.py loadplugin /business-ecosystem-charging-backend/plugins/Orion.zip
 
 if [ ! -d /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query ]; then
