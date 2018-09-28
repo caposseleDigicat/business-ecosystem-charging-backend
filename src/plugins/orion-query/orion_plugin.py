@@ -119,7 +119,7 @@ class OrionPlugin(Plugin):
             role_name = service + '|' + 'GET' + '|' + resource_type  + '|' + resource + '|' + attr
             json_role = self._pack_json_role(role_name, application_id)
             if not (keystone_client.get_role_by_name(application_id, role_name)):
-                role = keystone_client.create_role(json_role)
+                role = keystone_client.create_role(application_id, json_role)
 
         except HTTPError as e:
             raise PluginError(e)
@@ -180,7 +180,7 @@ class OrionPlugin(Plugin):
         try:
             keystone_client = KeystoneClient(KEYSTONE_USER, KEYSTONE_PWD, ADMIN_DOMAIN, KEYSTONE_PROTOCOL, KEYSTONE_HOST, KEYSTONE_PORT)
 
-            
+            #raise PluginError(order.owner_organization.name)
             # Check the customer user
             customer_id = order.owner_organization.name#self._get_user_id(keystone_client, asset.meta_info['domain_id'], order.owner_organization.name)
 

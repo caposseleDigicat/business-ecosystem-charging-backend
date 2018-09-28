@@ -68,7 +68,7 @@ class TokenCollection(Resource):
 
         try:
             token_info = keystone_client.get_token_info(m_token)
-            user_id = keystone_client.get_user_by_username(username)
+            user_id = keystone_client.get_user_by_email(username)
     
             if not user_id:
                 return build_response(request, 401, 'Invalid username')
@@ -180,7 +180,7 @@ class TokenRead(Resource):
 
         try:
             token_info = keystone_client.get_token_info(m_token)
-            user_id = keystone_client.get_user_by_username(userId)
+            user_id = keystone_client.get_user_by_email(userId)
     
             if not user_id:
                 return build_response(request, 401, 'Invalid username')

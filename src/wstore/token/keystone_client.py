@@ -86,8 +86,15 @@ class KeystoneClient:
                return user['id'] 
         return None
     
+    def get_user_by_email(self, email):
+        res = self._make_get_request(self._server + '/v1/users')
+        for user in res['users']:
+            if user['email'] == email:
+               return user['id'] 
+        return None
+    
     def get_token_info(self, token):
-        return self._make_get_request(self._server + '/user?access-token=' + token)
+        return self._make_get_request(self._server + '/user?access_token=' + token)
 
     def check_role(self, application_id, user_id, role_id):
         #get roles for user on application
