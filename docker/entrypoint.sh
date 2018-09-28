@@ -114,7 +114,9 @@ done
 echo "Installing Orion Plugin"
 /business-ecosystem-charging-backend/src/manage.py loadplugin /business-ecosystem-charging-backend/src/plugins/Orion.zip
 
-mkdir /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query
+if [ ! -d /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query ]; then
+    mkdir /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query
+fi
 
 touch /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/orion-query/__init__.py
 
@@ -124,7 +126,9 @@ cp /business-ecosystem-charging-backend/src/plugins/orion-query/* /business-ecos
 echo "Installing HistoricalAPI Plugin"
 /business-ecosystem-charging-backend/src/manage.py loadplugin /business-ecosystem-charging-backend/src/plugins/Historical.zip
 
-mkdir /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query
+if [ ! -d /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query ]; then
+    mkdir /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query
+fi
 
 touch /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query/__init__.py
 
