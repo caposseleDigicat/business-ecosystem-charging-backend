@@ -113,8 +113,8 @@ class ProductSpecification(Resource):
             pr_sp["productSpecCharacteristic"] = [asset_type, media_type, location, appId, fiware_service]
             validation["product"] = pr_sp
 
-            pr_sp["relatedParty"][0]["id"] = token_info["username"]
-            pr_sp["relatedParty"][0]["href"] = SITE + "/DSPartyManagement/api/partyManagement/v2/individual/" + token_info["username"]
+            pr_sp["relatedParty"][0]["id"] = token_info["id"]
+            pr_sp["relatedParty"][0]["href"] = SITE + "/DSPartyManagement/api/partyManagement/v2/individual/" + token_info["id"]
             pr_sp["name"] = body["dataSourceID"]
             pr_sp["brand"] = token_info["username"]
 
