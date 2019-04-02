@@ -20,13 +20,27 @@
 
 from __future__ import unicode_literals
 
-SITE = 'http://localhost:8004/'
-LOCAL_SITE = 'http://localhost:8006/'
+VERIFY_REQUESTS = True
 
-CATALOG = 'http://localhost:8080/DSProductCatalog'
-INVENTORY = 'http://localhost:8080/DSProductInventory'
-ORDERING = 'http://localhost:8080/DSProductOrdering'
-BILLING = 'http://localhost:8080/DSBillingManagement'
-RSS = 'http://localhost:8080/DSRevenueSharing'
-USAGE = 'http://localhost:8080/DSUsageManagement'
-AUTHORIZE_SERVICE = 'http://localhost:8004/authorizeService/apiKeys'
+SITE = 'http://proxy.docker:8004/'
+LOCAL_SITE = 'http://charging.docker:8006/'
+
+CATALOG = 'http://apis.docker:8080/DSProductCatalog'
+INVENTORY = 'http://apis.docker:8080/DSProductInventory'
+ORDERING = 'http://apis.docker:8080/DSProductOrdering'
+BILLING = 'http://apis.docker:8080/DSBillingManagement'
+RSS = 'http://rss.docker:8080/DSRevenueSharing'
+USAGE = 'http://apis.docker:8080/DSUsageManagement'
+AUTHORIZE_SERVICE = 'http://proxy.docker:8004/authorizeService/token'
+
+KEYSTONE_PROTOCOL = 'http'
+KEYSTONE_HOST = 'idm.docker'
+KEYROCK_PORT = '8000'
+KEYSTONE_PORT = '5000'
+KEYSTONE_USER = ''
+KEYSTONE_PWD = ''
+ADMIN_DOMAIN = ''
+
+#APP SETTINGS (e.g., Orion context broker)
+APP_CLIENT_ID = ''
+APP_CLIENT_SECRET = ''

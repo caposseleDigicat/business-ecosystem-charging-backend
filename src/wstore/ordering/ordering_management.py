@@ -44,7 +44,7 @@ class OrderingManager:
         self._validator = ProductValidator()
 
     def _download(self, url, element, item_id):
-        r = requests.get(url)
+        r = requests.get(url, verify=settings.VERIFY_REQUESTS)
 
         if r.status_code != 200:
             raise OrderingError('The ' + element + ' specified in order item ' + item_id + ' does not exists')
@@ -70,13 +70,13 @@ class OrderingManager:
             included_offerings = [Offering.objects.get(pk=off_pk) for off_pk in offering.bundled_offerings]
             included_offerings.append(offering)
 
-            def owned_digital(off):
-                if off.is_digital and off.pk in self._customer.userprofile.current_organization.acquired_offerings:
-                    raise OrderingError('The customer already owns the digital product offering ' + off.name + ' with id ' + off.off_id)
+            # def owned_digital(off):
+            #     if off.is_digital and off.pk in self._customer.userprofile.current_organization.acquired_offerings:
+            #         raise OrderingError('The customer already owns the digital product offering ' + off.name + ' with id ' + off.off_id)
 
-                return off
+            #     return off
 
-            map(owned_digital, included_offerings)
+            # map(owned_digital, included_offerings)
 
         else:
             raise OrderingError('The offering ' + offering_id + ' has not been previously registered')
@@ -237,7 +237,7 @@ class OrderingManager:
             if not self._customer.userprofile.current_organization.private:
                 headers['x-organization'] = self._customer.userprofile.current_organization.name
 
-            r = requests.get(url, headers=headers)
+            r = requests.get(url, headers=headers, verify=settings.VERIFY_REQUESTS)
 
             if r.status_code != 200:
                 raise OrderingError('There was an error at the time of retrieving the Billing Address')

@@ -5,9 +5,9 @@ FROM ubuntu:16.04
 RUN apt-get update && apt-get install -y --fix-missing \
     gcc wkhtmltopdf xvfb python2.7 python-pip \
     python-dev build-essential libssl-dev libffi-dev \
-    apache2 libapache2-mod-wsgi wget && \
+    apache2 libapache2-mod-wsgi wget 
     #git clone https://github.com/caposseleDigicat/business-ecosystem-charging-backend.git && \
-    pip install sh
+RUN pip install sh
 
 #ENV VERSION Synchronicity
 #ENV VERSION multiple_broker
@@ -25,7 +25,7 @@ RUN mkdir ./src/media && \
 RUN chmod -R 777 ./src/media
 
 ENV WORKSPACE=`pwd`
-RUN ./python-dep-install.sh && \
+RUN ./python-dep-install.sh
 RUN echo "from user_settings.settings import *" > ./src/settings.py
 
 # Create volumes
