@@ -21,7 +21,7 @@ jobs:
             - v1-pip-{{ arch }}-
 
       - run:
-          name: Install dependencies
+          name: Install dependencies with pip
           command: |
             ./python-dep-install.sh
             pip install coveralls
