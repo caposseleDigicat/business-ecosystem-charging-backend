@@ -7,26 +7,21 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Grant CircleCI access to dependency locations
-          command: |
-            sudo chown -R circleci:circleci /usr/local/bin
-            sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
-
       - restore_cache:
           name: Restore installed dependencies
           keys:
-            - v1-pip-{{ arch }}-{{ .Branch }}-{{ checksum "python-dep-install.sh" }}
-            - v1-pip-{{ arch }}-{{ .Branch }}-
-            - v1-pip-{{ arch }}-
+            - v2-pip-{{ arch }}-{{ .Branch }}-{{ checksum "python-dep-install.sh" }}
+            - v2-pip-{{ arch }}-{{ .Branch }}-
+            - v2-pip-{{ arch }}-
 
       - run:
           name: Install dependencies with pip
           command: |
-            sudo ./python-dep-install.sh
-            sudo pip install coveralls
-            sudo pip install "mock==1.0.1"
-            sudo pip install "nose-parameterized==0.5.0"
+            virtualenv virtenv
+            ./python-dep-install.sh
+            pip install coveralls
+            pip install "mock==1.0.1"
+            pip install "nose-parameterized==0.5.0"
 
       - run:
           name: Coverage
@@ -37,10 +32,9 @@ jobs:
 
       - save_cache:
           name: Save dependencies cache
-          key: v1-pip-{{ arch }}-{{ .Branch }}-{{ checksum "python-dep-install.sh" }}
+          key: v2-pip-{{ arch }}-{{ .Branch }}-{{ checksum "python-dep-install.sh" }}
           paths:
-            - "/usr/local/bin"
-            - "/usr/local/lib/python2.7/site-packages"
+            - virtenv
 
   docker-build:
     docker:
