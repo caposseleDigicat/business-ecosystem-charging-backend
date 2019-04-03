@@ -9,7 +9,7 @@ jobs:
 
       - run:
           name: Grant CircleCI access to dependency locations
-          comand: |
+          command: |
             sudo chown -R circleci:circleci /usr/local/bin
             sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
 
