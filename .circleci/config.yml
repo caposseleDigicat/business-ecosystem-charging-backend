@@ -27,6 +27,7 @@ jobs:
       - run:
           name: Coverage
           command: |
+            . virtenv/bin/activate
             cd src
             coverage run --branch --source=wstore ./manage.py test --noinput --with-xunit --nologcapture -v 2
             coverage xml --omit="*urls*" -i
