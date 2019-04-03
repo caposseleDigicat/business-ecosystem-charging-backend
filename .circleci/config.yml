@@ -18,6 +18,7 @@ jobs:
           name: Install dependencies with pip
           command: |
             virtualenv virtenv
+            . virtenv/bin/activate
             ./python-dep-install.sh
             pip install coveralls
             pip install "mock==1.0.1"
