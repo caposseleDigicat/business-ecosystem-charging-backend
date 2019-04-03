@@ -1,0 +1,114 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/python:2.7
+      - image: circleci/mongo:3.2
+    steps:
+      - checkout
+
+      - run:
+        name: Grant CircleCI access to dependency locations
+        comand: |
+          sudo chown -R circleci:circleci /usr/local/bin
+          sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
+
+      - restore_cache:
+          name: Restore installed dependencies
+          keys:
+            - v1-pip-{{ arch }}-{{ .Branch }}-{{ checksum "python-dep-install.sh" }}
+            - v1-pip-{{ arch }}-{{ .Branch }}-
+            - v1-pip-{{ arch }}-
+
+      - run:
+          name: Install dependencies
+          command: |
+            ./python-dep-install.sh
+            pip install coveralls
+            pip install "mock==1.0.1"
+            pip install "nose-parameterized==0.5.0"
+
+      - run:
+          name: Coverage
+          command: |
+            cd src
+            coverage run --branch --source=wstore ./manage.py test --noinput --with-xunit --nologcapture -v 2
+            coverage xml --omit="*urls*" -i
+
+      - save_cache:
+          name: Save dependencies cache
+          key: v1-pip-{{ arch }}-{{ .Branch }}-{{ checksum "python-dep-install.sh" }}
+          paths:
+            - "/usr/local/bin"
+            - "/usr/local/lib/python2.7/site-packages"
+
+  docker-build:
+    docker:
+      - image: docker:18.01.0-ce-git
+    steps:
+      - checkout
+
+      - setup_remote_docker
+
+      - run:
+          name: Login to docker
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+      - run:
+          name: Build the docker image
+          command: |
+            docker build -t charging7 .
+
+      - run:
+          name: Tag the docker image
+          command: |
+            docker tag charging7 digicatsynch/charging7:$CIRCLE_SHA1
+            docker tag charging7 digicatsynch/charging7:ci-$CIRCLE_BUILD_NUM
+            docker tag charging7 digicatsynch/charging7:${CIRCLE_BRANCH##feature/}
+
+      - run:
+          name: Push the docker image
+          command: |
+            docker push digicatsynch/charging7:$CIRCLE_SHA1
+            docker push digicatsynch/charging7:ci-$CIRCLE_BUILD_NUM
+            docker push digicatsynch/charging7:${CIRCLE_BRANCH##feature/}
+
+    release-version:
+      docker:
+        - image: docker:18.01.0-ce-git
+      steps:
+        - checkout
+
+        - setup_remote_docker
+
+        - run:
+            name: Login to docker
+            command: |
+              docker login -u $DOCKER_USER -p $DOCKER_PASS
+
+        - run:
+            name: Build the docker image
+            command: |
+              docker build -t digicatsynch/charging7:${CIRCLE_TAG##v} .
+
+        - run:
+            name: Push the docker image
+            command: |
+              docker push digicatsynch/charging7:${CIRCLE_TAG##v}
+workflows:
+  version: 2
+  logic-proxy:
+    jobs:
+      - test
+      - docker-build:
+          requires:
+            - test
+  tagged-build:
+    jobs:
+      - release-version:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
