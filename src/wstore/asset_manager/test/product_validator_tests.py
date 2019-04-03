@@ -365,7 +365,6 @@ class ValidatorTestCase(TestCase):
         product_validator.Resource.objects.filter.side_effect = [[bundle1, bundle2, self._asset_instance], [product1], [product2]]
 
     @parameterized.expand([
-        ('digital_asset', BASIC_PRODUCT['product'], True, True),
         ('non_digital', {'isBundle': False}),
         ('bundle_non_pending', BASIC_BUNDLE_CREATION['product'], False, False, True, _non_pending_bundles),
         ('bundle_multiple_pending', BASIC_BUNDLE_CREATION['product'], False, True, True, _pending_bundles)
@@ -622,4 +621,3 @@ class ValidatorTestCase(TestCase):
         validator.validate(action, self._provider, data)
 
         test_validator(self)
-
