@@ -8,10 +8,10 @@ jobs:
       - checkout
 
       - run:
-        name: Grant CircleCI access to dependency locations
-        comand: |
-          sudo chown -R circleci:circleci /usr/local/bin
-          sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
+          name: Grant CircleCI access to dependency locations
+          comand: |
+            sudo chown -R circleci:circleci /usr/local/bin
+            sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
 
       - restore_cache:
           name: Restore installed dependencies
