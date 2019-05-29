@@ -55,10 +55,6 @@ if [ ! -f /business-ecosystem-charging-backend/src/user_settings/__init__.py ]; 
     touch /business-ecosystem-charging-backend/src/user_settings/__init__.py
 fi
 
-# Configure PayPal settings
-sed -i "s|PAYPAL_CLIENT_ID = ''|PAYPAL_CLIENT_ID = '$PAYPAL_CLIENT_ID'|g" ./wstore/charging_engine/payment_client/paypal_client.py
-sed -i "s|PAYPAL_CLIENT_SECRET = ''|PAYPAL_CLIENT_SECRET = '$PAYPAL_CLIENT_SECRET'|g" ./wstore/charging_engine/payment_client/paypal_client.py
-
 # Ensure mongodb is running
 # Get MongoDB host and port from settings
 MONGO_HOST=`grep -o "'HOST':.*" ./user_settings/settings.py | grep -o ": '.*'" | grep -oE "[^:' ]+"`
