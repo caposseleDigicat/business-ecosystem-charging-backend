@@ -21,6 +21,7 @@
 from __future__ import unicode_literals
 
 from decimal import Decimal
+from os import environ
 import random
 import string
 import paypalrestsdk
@@ -31,8 +32,8 @@ from wstore.charging_engine.payment_client.payment_client import PaymentClient
 from wstore.ordering.errors import PaymentError
 
 # Paypal credentials
-PAYPAL_CLIENT_ID = 'AdQVjEx5-_sdUUsxbUzeDOKb4e3GxRvuSaz_UPOHsrbr7XZffPZakeeJFi0UL-ZLYzqYGLfO7mJJHf-l'
-PAYPAL_CLIENT_SECRET = 'EGlWcd1tEKBWoIc3Lm7QBaP8nWAKswKb32EuXHnYz_g40FPxzbq6nipJ_F3gLb-Uu_MaWSZOL4Pqtnkl'
+PAYPAL_CLIENT_ID = environ['PAYPAL_CLIENT_ID']
+PAYPAL_CLIENT_SECRET = environ['PAYPAL_CLIENT_SECRET']
 MODE = 'sandbox'  # sandbox or live
 
 
@@ -162,4 +163,3 @@ class PayPalClient(PaymentClient):
         })
 
         return payout, payout.create()
-
