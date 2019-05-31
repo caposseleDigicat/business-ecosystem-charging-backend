@@ -1,25 +1,40 @@
-version: '3'
+version: "3"
 services:
-    charging:
-        image: charging-backend-angelo:latest
-        ports:
-            - 8006:8006
-        external_links:
-            - mongo
-        networks:
-            main:
-                aliases:
-                    - charging.docker
-        volumes:
-            #- ./charging-src:/business-ecosystem-charging-backend/src
-            - ./charging-bills:/business-ecosystem-charging-backend/src/media/bills
-            - ./charging-assets:/business-ecosystem-charging-backend/src/media/assets
-            - ./charging-plugins:/business-ecosystem-charging-backend/src/plugins
-            - ./charging-settings:/business-ecosystem-charging-backend/src/user_settings
-            #- ./charging-inst-plugins:/business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins
-        environment:
-          - PAYPAL_CLIENT_ID='test'
-          - PAYPAL_CLIENT_SECRET='test'
+  charging:
+    build: .
+    ports:
+      - 8006:8006
+    external_links:
+      - mongo
+    networks:
+      main:
+        aliases:
+          - charging.docker
+    volumes:
+      #- ./charging-src:/business-ecosystem-charging-backend/src
+      - ./charging-bills:/business-ecosystem-charging-backend/src/media/bills
+      - ./charging-assets:/business-ecosystem-charging-backend/src/media/assets
+      - ./charging-plugins:/business-ecosystem-charging-backend/src/plugins
+      #- ./charging-inst-plugins:/business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins
+    environment:
+      - PAYPAL_CLIENT_ID='test'
+      - PAYPAL_CLIENT_SECRET='test'
+      - SITE=http://proxy.docker:8004/
+      - LOCAL_SITE=http://charging.docker:8006/
+      - CATALOG=http://apis.docker:8080/DSProductCatalog
+      - INVENTORY=http://apis.docker:8080/DSProductInventory
+      - ORDERING=http://apis.docker:8080/DSProductOrdering
+      - BILLING=http://apis.docker:8080/DSBillingManagement
+      - USAGE=http://apis.docker:8080/DSUsageManagement
+      - RSS=http://rss.docker:8080/DSRevenueSharing
+      - AUTHORIZE_SERVICE=http://proxy.docker:8004/authorizeService/token
+      - KEYSTONE_PROTOCOL=http
+      - KEYSTONE_HOST=idm.docker
+      - KEYSTONE_USER=admin@test.com
+      - KEYSTONE_PWD=1234
+      - DEBUG=true
+      - DB_HOST=mongo
+      - BASEDIR=/business-ecosystem-charging-backend/src
 networks:
-    main:
-        external: true
+  synchronicity:
+    external: true
