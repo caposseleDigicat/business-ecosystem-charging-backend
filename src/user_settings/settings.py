@@ -1,9 +1,8 @@
-
 from __future__ import unicode_literals
 
-from os import path
+from os import path, environ
 
-DEBUG = True
+DEBUG = environ.get('DEBUG', 'false').lower() == 'true'
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -14,17 +13,17 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_mongodb_engine',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'wstore_db',           # Or path to database file if using sqlite3.
-        'USER': '',                         # Not used with sqlite3.
-        'PASSWORD': '',                     # Not used with sqlite3.
-        'HOST': 'mongo',                         # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                         # Set to empty string for default. Not used with sqlite3.
-        'TEST_NAME': 'test_database',
+        'ENGINE': environ.get('DB_ENGINE', 'django_mongodb_engine'), # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': environ.get('DB_NAME', 'wstore_db'),                 # Or path to database file if using sqlite3.
+        'USER': environ.get('DB_USER', ''),                          # Not used with sqlite3.
+        'PASSWORD': environ.get('DB_PASSWORD', ''),                  # Not used with sqlite3.
+        'HOST': environ.get('DB_HOST', 'localhost'),                 # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': environ.get('DB_PORT', ''),                          # Set to empty string for default. Not used with sqlite3.
+        'TEST_NAME': environ.get('DB_TEST_NAME', 'test_database'),
     }
 }
 
-BASEDIR = "/business-ecosystem-charging-backend/src"
+BASEDIR =  environ.get('BASEDIR', path.dirname(path.abspath(__file__)))
 
 STORE_NAME = 'WStore'
 AUTH_PROFILE_MODULE = 'wstore.models.UserProfile'
