@@ -5,7 +5,7 @@ FROM ubuntu:16.04
 RUN apt-get update && apt-get install -y --fix-missing \
     gcc wkhtmltopdf xvfb python2.7 python-pip \
     python-dev build-essential libssl-dev libffi-dev \
-    apache2 libapache2-mod-wsgi wget 
+    apache2 libapache2-mod-wsgi wget
     #git clone https://github.com/caposseleDigicat/business-ecosystem-charging-backend.git && \
 RUN pip install sh
 
@@ -16,11 +16,9 @@ WORKDIR business-ecosystem-charging-backend
 
 COPY / ./
 
-RUN mkdir ./src/media && \
-    mkdir ./src/media/bills && \
-    mkdir ./src/media/assets && \
-    #mkdir ./src/plugins && \
-    mkdir ./src/user_settings
+RUN mkdir -p ./src/media/bills && \
+    mkdir -p ./src/media/assets && \
+    mkdir -p ./src/user_settings
 
 RUN chmod -R 777 ./src/media
 
@@ -55,4 +53,3 @@ COPY /docker/entrypoint.sh /
 EXPOSE 8006
 
 ENTRYPOINT ["/entrypoint.sh"]
-
