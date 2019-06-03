@@ -21,7 +21,6 @@
 from __future__ import unicode_literals
 
 from decimal import Decimal
-from os import environ
 import random
 import string
 import paypalrestsdk
@@ -32,8 +31,6 @@ from wstore.charging_engine.payment_client.payment_client import PaymentClient
 from wstore.ordering.errors import PaymentError
 
 # Paypal credentials
-PAYPAL_CLIENT_ID = environ['PAYPAL_CLIENT_ID']
-PAYPAL_CLIENT_SECRET = environ['PAYPAL_CLIENT_SECRET']
 MODE = 'sandbox'  # sandbox or live
 
 
@@ -47,8 +44,8 @@ class PayPalClient(PaymentClient):
         # Configure API connection
         paypalrestsdk.configure({
             "mode": MODE,
-            "client_id": PAYPAL_CLIENT_ID,
-            "client_secret": PAYPAL_CLIENT_SECRET
+            "client_id": settings.PAYPAL_CLIENT_ID,
+            "client_secret": settings.PAYPAL_CLIENT_SECRET
         })
 
     def start_redirection_payment(self, transactions):

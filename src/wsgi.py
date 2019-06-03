@@ -1,3 +1,5 @@
+from django.core.handlers.wsgi import WSGIHandler
+import django
 import os
 import sys
 
@@ -7,6 +9,14 @@ if path not in sys.path:
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
-import django.core.handlers.wsgi
-application = django.core.handlers.wsgi.WSGIHandler()
 
+class WSGIEnvironment(WSGIHandler):
+
+    def __call__(self, environ, start_response):
+
+        os.environ['PAYPAL_CLIENT_ID'] = environ['PAYPAL_CLIENT_ID']
+        os.environ['PAYPAL_CLIENT_SECRET'] = environ['PAYPAL_CLIENT_SECRET']
+        django.setup()
+        return super(WSGIEnvironment, self).__call__(environ, start_response)
+
+application = WSGIEnvironment()
