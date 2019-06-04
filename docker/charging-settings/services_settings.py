@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 VERIFY_REQUESTS = True
 
 SITE = 'http://proxy.docker:8004/'
@@ -13,15 +11,13 @@ USAGE = 'http://apis.docker:8080/DSUsageManagement'
 
 RSS = 'http://rss.docker:8080/DSRevenueSharing'
 
-AUTHORIZE_SERVICE = 'http://proxy.docker:8004/authorizeService/apiKeys'
+AUTHORIZE_SERVICE = 'http://proxy.docker:8004/authorizeService/token'
 
-KEYSTONE_HOST = 'http://idm.docker'
-KEYROCK_PORT = '8000'
-KEYSTONE_PORT = '5000'
-KEYSTONE_USER = ''
-KEYSTONE_PWD = ''
+# Keyrock/Keystone settings
+KEYSTONE_PROTOCOL = 'http'
+KEYSTONE_HOST = 'idm.docker'
+KEYROCK_PORT = '3000'
+KEYSTONE_PORT = '3000'
+KEYSTONE_USER = 'admin@test.com'
+KEYSTONE_PWD = '1234'
 ADMIN_DOMAIN = ''
-
-#APP SETTINGS (e.g., Orion context broker)
-APP_CLIENT_ID = ''
-APP_CLIENT_SECRET = ''

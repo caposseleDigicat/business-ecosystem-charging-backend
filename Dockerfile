@@ -1,12 +1,10 @@
 FROM ubuntu:16.04
 
-#ENV VERSION no-cache1
-
 RUN apt-get update && apt-get install -y --fix-missing \
     gcc wkhtmltopdf xvfb python2.7 python-pip \
     python-dev build-essential libssl-dev libffi-dev \
     apache2 libapache2-mod-wsgi wget
-    #git clone https://github.com/caposseleDigicat/business-ecosystem-charging-backend.git && \
+
 RUN pip install sh
 
 #ENV VERSION Synchronicity
@@ -41,7 +39,6 @@ COPY /docker/wsgi.py .
 
 WORKDIR /etc/apache2/
 COPY /docker/charging.conf ./sites-available
-#RUN mkdir ./sites-enabled
 
 RUN ln -s ../sites-available/charging.conf ./sites-enabled/charging.conf && \
     sed -i "s|Listen 80|Listen 8006|g" ports.conf
