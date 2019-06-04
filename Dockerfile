@@ -34,9 +34,6 @@ VOLUME /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_pl
 
 WORKDIR src
 
-RUN rm wsgi.py
-COPY /docker/wsgi.py .
-
 WORKDIR /etc/apache2/
 COPY /docker/charging.conf ./sites-available
 
