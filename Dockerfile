@@ -1,9 +1,11 @@
-FROM python:2.7
+FROM python:2.7-alpine
 
-# gcc libssl-dev python2.7 python-pip wget libffi-dev
-RUN apt-get update && apt-get install -y --fix-missing \
-    wkhtmltopdf xvfb \
-    python-dev build-essential
+RUN apk add --no-cache \
+  bash wget \
+  gcc python-dev libffi-dev musl-dev libressl-dev
+
+# wkhtmltopdf
+# xvfb
 
 WORKDIR business-ecosystem-charging-backend
 
