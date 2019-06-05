@@ -1,28 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Copyright (c) 2013 - 2017 CoNWeT Lab., Universidad Politécnica de Madrid
-
-# This file belongs to the business-charging-backend
-# of the Business API Ecosystem.
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 from __future__ import unicode_literals
 
-from os import path
+from os import path, environ
 
-DEBUG = True
+DEBUG = environ.get('DEBUG', 'false').lower() == 'true'
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -33,17 +13,17 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_mongodb_engine',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'wstore_db',           # Or path to database file if using sqlite3.
-        'USER': '',                         # Not used with sqlite3.
-        'PASSWORD': '',                     # Not used with sqlite3.
-        'HOST': '',                         # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                         # Set to empty string for default. Not used with sqlite3.
-        'TEST_NAME': 'test_database',
+        'ENGINE': environ.get('DB_ENGINE', 'django_mongodb_engine'), # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': environ.get('DB_NAME', 'wstore_db'),                 # Or path to database file if using sqlite3.
+        'USER': environ.get('DB_USER', ''),                          # Not used with sqlite3.
+        'PASSWORD': environ.get('DB_PASSWORD', ''),                  # Not used with sqlite3.
+        'HOST': environ.get('DB_HOST', 'localhost'),                 # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': environ.get('DB_PORT', ''),                          # Set to empty string for default. Not used with sqlite3.
+        'TEST_NAME': environ.get('DB_TEST_NAME', 'test_database'),
     }
 }
 
-BASEDIR = path.dirname(path.abspath(__file__))
+BASEDIR =  environ.get('BASEDIR', path.dirname(path.abspath(__file__)))
 
 STORE_NAME = 'WStore'
 AUTH_PROFILE_MODULE = 'wstore.models.UserProfile'

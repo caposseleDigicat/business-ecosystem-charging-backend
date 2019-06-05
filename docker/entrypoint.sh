@@ -40,56 +40,48 @@ if [ -z $PAYPAL_CLIENT_SECRET ]; then
     exit 1
 fi
 
-# Check that the settings files have been included
-if [ ! -f /business-ecosystem-charging-backend/src/user_settings/settings.py ]; then
-    echo "Missing settings.py file"
+if [ -z $CATALOG ]; then
+    echo 'CATALOG environment variable not set'
     exit 1
 fi
 
-if [ ! -f /business-ecosystem-charging-backend/src/user_settings/services_settings.py ]; then
-    echo "Missing services_settings.py file"
+if [ -z $RSS ]; then
+    echo 'RSS environment variable not set'
     exit 1
 fi
 
-if [ ! -f /business-ecosystem-charging-backend/src/user_settings/__init__.py ]; then
-    touch /business-ecosystem-charging-backend/src/user_settings/__init__.py
+if [ -z $INVENTORY ]; then
+    echo 'INVENTORY environment variable not set'
+    exit 1
 fi
-
-# Configure PayPal settings
-sed -i "s|PAYPAL_CLIENT_ID = ''|PAYPAL_CLIENT_ID = '$PAYPAL_CLIENT_ID'|g" ./wstore/charging_engine/payment_client/paypal_client.py
-sed -i "s|PAYPAL_CLIENT_SECRET = ''|PAYPAL_CLIENT_SECRET = '$PAYPAL_CLIENT_SECRET'|g" ./wstore/charging_engine/payment_client/paypal_client.py
 
 # Ensure mongodb is running
-# Get MongoDB host and port from settings
-MONGO_HOST=`grep -o "'HOST':.*" ./user_settings/settings.py | grep -o ": '.*'" | grep -oE "[^:' ]+"`
 
-if [ -z ${MONGO_HOST} ]; then
-    MONGO_HOST=localhost
+if [ -z ${DB_HOST} ]; then
+    DB_HOST=localhost
 fi
 
-MONGO_PORT=`grep -o "'PORT':.*" ./user_settings/settings.py | grep -o ": '.*'" | grep -oE "[^:' ]+"`
-
-if [ -z ${MONGO_PORT} ]; then
-    MONGO_PORT=27017
+if [ -z ${DB_PORT} ]; then
+    DB_PORT=27017
 fi
 
-test_connection "MongoDB" ${MONGO_HOST} ${MONGO_PORT}
+test_connection "MongoDB" ${DB_HOST} ${DB_PORT}
 
 # Check that the required APIs are running
-APIS_HOST=`grep "CATALOG =.*" ./user_settings/services_settings.py | grep -o "://.*:" | grep -oE "[^:/]+"`
-APIS_PORT=`grep "CATALOG =.*" ./user_settings/services_settings.py | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
+APIS_HOST=`echo $CATALOG | grep -o "://.*:" | grep -oE "[^:/]+"`
+APIS_PORT=`echo $CATALOG | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
 
 test_connection "APIs" ${APIS_HOST} ${APIS_PORT}
 
 # Check that the RSS is running
-RSS_HOST=`grep "RSS =.*" ./user_settings/services_settings.py | grep -o "://.*:" | grep -oE "[^:/]+"`
-RSS_PORT=`grep "RSS =.*" ./user_settings/services_settings.py | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
+RSS_HOST=`echo $RSS | grep -o "://.*:" | grep -oE "[^:/]+"`
+RSS_PORT=`echo $RSS | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
 test_connection "RSS" ${RSS_HOST} ${RSS_PORT}
 
 ################### TEST APIS CONNECTION FIRST #######################
 # Get glassfish host and port from config
-INVENTORY_HOST=`grep "INVENTORY =.*" ./user_settings/services_settings.py | grep -o "://.*:" | grep -oE "[^:/]+"`
-INVENTORY_PORT=`grep "INVENTORY =.*" ./user_settings/services_settings.py | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
+INVENTORY_HOST=`echo $INVENTORY | grep -o "://.*:" | grep -oE "[^:/]+"`
+INVENTORY_PORT=`echo $INVENTORY | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
 #test_connection 'INVENTORY' ${INVENTORY_HOST} ${INVENTORY_PORT}
 
 #GLASSFISH_HOST=`/business-ecosystem-logic-proxy/node-v6.9.1-linux-x64/bin/node getConfig glasshost`

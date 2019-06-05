@@ -21,6 +21,7 @@
 from __future__ import unicode_literals
 
 from decimal import Decimal
+from os import environ
 import random
 import string
 import paypalrestsdk
@@ -29,12 +30,6 @@ from django.conf import settings
 
 from wstore.charging_engine.payment_client.payment_client import PaymentClient
 from wstore.ordering.errors import PaymentError
-
-# Paypal credentials
-PAYPAL_CLIENT_ID = 'AdQVjEx5-_sdUUsxbUzeDOKb4e3GxRvuSaz_UPOHsrbr7XZffPZakeeJFi0UL-ZLYzqYGLfO7mJJHf-l'
-PAYPAL_CLIENT_SECRET = 'EGlWcd1tEKBWoIc3Lm7QBaP8nWAKswKb32EuXHnYz_g40FPxzbq6nipJ_F3gLb-Uu_MaWSZOL4Pqtnkl'
-MODE = 'sandbox'  # sandbox or live
-
 
 class PayPalClient(PaymentClient):
 
@@ -45,9 +40,9 @@ class PayPalClient(PaymentClient):
         self._order = order
         # Configure API connection
         paypalrestsdk.configure({
-            "mode": MODE,
-            "client_id": PAYPAL_CLIENT_ID,
-            "client_secret": PAYPAL_CLIENT_SECRET
+            "mode": environ.get('PAYPAL_MODE', 'sandbox'), # sandbox or live,
+            "client_id": environ.get('PAYPAL_CLIENT_ID', ''),
+            "client_secret": environ.get('PAYPAL_CLIENT_SECRET', '')
         })
 
     def start_redirection_payment(self, transactions):
@@ -162,4 +157,3 @@ class PayPalClient(PaymentClient):
         })
 
         return payout, payout.create()
-
