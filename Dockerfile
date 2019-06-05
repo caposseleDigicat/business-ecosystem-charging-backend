@@ -1,11 +1,9 @@
-FROM ubuntu:16.04
+FROM python:2.7
 
+# gcc libssl-dev python2.7 python-pip wget libffi-dev
 RUN apt-get update && apt-get install -y --fix-missing \
-    gcc wkhtmltopdf xvfb python2.7 python-pip \
-    python-dev build-essential libssl-dev libffi-dev \
-    apache2 libapache2-mod-wsgi wget
-
-RUN pip install sh
+    wkhtmltopdf xvfb \
+    python-dev build-essential
 
 WORKDIR business-ecosystem-charging-backend
 
@@ -35,12 +33,6 @@ VOLUME /business-ecosystem-charging-backend/src/user_settings
 VOLUME /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins
 
 WORKDIR src
-
-WORKDIR /etc/apache2/
-COPY /docker/charging.conf ./sites-available
-
-RUN ln -s ../sites-available/charging.conf ./sites-enabled/charging.conf && \
-    sed -i "s|Listen 80|Listen 8006|g" ports.conf
 
 WORKDIR /business-ecosystem-charging-backend/src
 

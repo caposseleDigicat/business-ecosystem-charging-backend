@@ -137,9 +137,5 @@ touch /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plu
 
 cp /business-ecosystem-charging-backend/plugins/historicalapi-query/* /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query/
 
-
-
 echo "Starting charging server"
-service apache2 restart
-
-while true; do sleep 1000; done
+gunicorn -b 0.0.0.0:8006 wsgi:application
