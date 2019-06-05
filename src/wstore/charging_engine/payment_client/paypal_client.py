@@ -31,12 +31,6 @@ from django.conf import settings
 from wstore.charging_engine.payment_client.payment_client import PaymentClient
 from wstore.ordering.errors import PaymentError
 
-# Paypal credentials
-PAYPAL_CLIENT_ID = environ['PAYPAL_CLIENT_ID']
-PAYPAL_CLIENT_SECRET = environ['PAYPAL_CLIENT_SECRET']
-MODE = 'sandbox'  # sandbox or live
-
-
 class PayPalClient(PaymentClient):
 
     _purchase = None
@@ -46,9 +40,9 @@ class PayPalClient(PaymentClient):
         self._order = order
         # Configure API connection
         paypalrestsdk.configure({
-            "mode": MODE,
-            "client_id": PAYPAL_CLIENT_ID,
-            "client_secret": PAYPAL_CLIENT_SECRET
+            "mode": environ.get('PAYPAL_MODE', 'sandbox'), # sandbox or live,
+            "client_id": environ.get('PAYPAL_CLIENT_ID', ''),
+            "client_secret": environ.get('PAYPAL_CLIENT_SECRET', '')
         })
 
     def start_redirection_payment(self, transactions):
