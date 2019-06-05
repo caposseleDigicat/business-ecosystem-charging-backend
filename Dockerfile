@@ -7,12 +7,16 @@ RUN apt-get update && apt-get install -y --fix-missing \
 
 RUN pip install sh
 
-#ENV VERSION Synchronicity
-#ENV VERSION multiple_broker
-
 WORKDIR business-ecosystem-charging-backend
 
-COPY / ./
+COPY plugins plugins
+
+# Installing dependencies
+ENV WORKSPACE=`pwd`
+COPY python-dep-install.sh .
+RUN ./python-dep-install.sh
+
+COPY src src
 
 RUN mkdir -p ./src/media/bills && \
     mkdir -p ./src/media/assets && \
@@ -20,8 +24,6 @@ RUN mkdir -p ./src/media/bills && \
 
 RUN chmod -R 777 ./src/media
 
-ENV WORKSPACE=`pwd`
-RUN ./python-dep-install.sh
 RUN echo "from user_settings.settings import *" > ./src/settings.py
 
 # Create volumes
