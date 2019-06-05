@@ -29,7 +29,6 @@ VOLUME /business-ecosystem-charging-backend/src
 VOLUME /business-ecosystem-charging-backend/src/media/bills
 VOLUME /business-ecosystem-charging-backend/src/media/assets
 VOLUME /business-ecosystem-charging-backend/src/plugins
-VOLUME /business-ecosystem-charging-backend/src/user_settings
 VOLUME /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins
 
 WORKDIR src
