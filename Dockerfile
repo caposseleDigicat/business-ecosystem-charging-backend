@@ -1,9 +1,10 @@
-FROM ubuntu:16.04
+FROM python:2.7
 
+# gcc libssl-dev python2.7 python-pip wget libffi-dev
 RUN apt-get update && apt-get install -y --fix-missing \
-    gcc wkhtmltopdf xvfb python2.7 python-pip \
-    python-dev build-essential libssl-dev libffi-dev \
-    apache2 libapache2-mod-wsgi wget
+    wkhtmltopdf xvfb \
+    python-dev build-essential \
+    apache2 libapache2-mod-wsgi
 
 RUN pip install sh
 
