@@ -1,46 +1,25 @@
-# -*- coding: utf-8 -*-
+from os import environ
 
-# Copyright (c) 2016 - 2017 CoNWeT Lab., Universidad Politécnica de Madrid
+VERIFY_REQUESTS = environ.get('VERIFY_REQUESTS', 'True').lower() == 'true'
 
-# This file belongs to the business-charging-backend
-# of the Business API Ecosystem.
+SITE = environ.get('SITE', 'http://localhost:8004/')
+LOCAL_SITE = environ.get('LOCAL_SITE', 'http://localhost:8006/')
 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+CATALOG = environ.get('CATALOG', 'http://localhost:8080/DSProductCatalog')
+INVENTORY = environ.get('INVENTORY', 'http://localhost:8080/DSProductInventory')
+ORDERING = environ.get('ORDERING', 'http://localhost:8080/DSProductOrdering')
+BILLING = environ.get('BILLING', 'http://localhost:8080/DSBillingManagement')
+USAGE = environ.get('USAGE', 'http://localhost:8080/DSUsageManagement')
 
-from __future__ import unicode_literals
+RSS = environ.get('RSS', 'http://localhost:8080/DSRevenueSharing')
 
-VERIFY_REQUESTS = True
+AUTHORIZE_SERVICE = environ.get('AUTHORIZE_SERVICE', 'http://localhost:8004/authorizeService/token')
 
-SITE = 'http://proxy.docker:8004/'
-LOCAL_SITE = 'http://charging.docker:8006/'
-
-CATALOG = 'http://apis.docker:8080/DSProductCatalog'
-INVENTORY = 'http://apis.docker:8080/DSProductInventory'
-ORDERING = 'http://apis.docker:8080/DSProductOrdering'
-BILLING = 'http://apis.docker:8080/DSBillingManagement'
-RSS = 'http://rss.docker:8080/DSRevenueSharing'
-USAGE = 'http://apis.docker:8080/DSUsageManagement'
-AUTHORIZE_SERVICE = 'http://proxy.docker:8004/authorizeService/token'
-
-KEYSTONE_PROTOCOL = 'http'
-KEYSTONE_HOST = 'idm.docker'
-KEYROCK_PORT = '8000'
-KEYSTONE_PORT = '5000'
-KEYSTONE_USER = ''
-KEYSTONE_PWD = ''
-ADMIN_DOMAIN = ''
-
-#APP SETTINGS (e.g., Orion context broker)
-APP_CLIENT_ID = ''
-APP_CLIENT_SECRET = ''
+# Keyrock/Keystone settings
+KEYSTONE_PROTOCOL = environ.get('KEYSTONE_PROTOCOL', 'http')
+KEYSTONE_HOST = environ.get('KEYSTONE_HOST', 'localhost')
+KEYROCK_PORT = environ.get('KEYROCK_PORT', '3000')
+KEYSTONE_PORT = environ.get('KEYSTONE_PORT', '3000')
+KEYSTONE_USER = environ.get('KEYSTONE_USER', 'admin@test.com')
+KEYSTONE_PWD = environ.get('KEYSTONE_PWD', '1234')
+ADMIN_DOMAIN = environ.get('ADMIN_DOMAIN', '')
