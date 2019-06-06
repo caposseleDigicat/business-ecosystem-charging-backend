@@ -23,14 +23,14 @@ services:
       - AUTHORIZE_SERVICE=http://proxy.docker:8004/authorizeService/token
       - KEYSTONE_PROTOCOL=http
       - KEYSTONE_HOST=idm.docker
-      - KEYSTONE_USER=${KEYSTONE_USER}
-      - KEYSTONE_PWD=${KEYSTONE_PWD}
+      #- KEYSTONE_USER=${KEYSTONE_USER}
+      #- KEYSTONE_PWD=${KEYSTONE_PWD}
       - APP_CLIENT_ID=${APP_CLIENT_ID}
       - APP_URL=http://pep.docker:7000/v2/entities/
 
       - DEBUG=true
       - DB_HOST=mongo
-      - SECRET_KEY=${SECRET_KEY}
+      #- SECRET_KEY=${SECRET_KEY}
 
 networks:
     synchronicity:
