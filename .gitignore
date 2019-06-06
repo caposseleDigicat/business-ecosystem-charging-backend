@@ -1,6 +1,7 @@
 *.DS_Store
 *.pyc
 *~
+.env
 .idea
 virtenv
 .coverage

@@ -4,14 +4,14 @@ services:
     build: .
     restart: always
     ports:
-      - 8006:8006
+      - "8006:8006"
     networks:
       synchronicity:
         aliases:
           - charging.docker
     environment:
-      - PAYPAL_CLIENT_ID=client_id_here
-      - PAYPAL_CLIENT_SECRET=client_secret_here
+      - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID}
+      - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET}
       - SITE=http://proxy.docker:8004/
       - LOCAL_SITE=http://charging.docker:8006/
       - CATALOG=http://apis.docker:8080/DSProductCatalog
@@ -23,11 +23,15 @@ services:
       - AUTHORIZE_SERVICE=http://proxy.docker:8004/authorizeService/token
       - KEYSTONE_PROTOCOL=http
       - KEYSTONE_HOST=idm.docker
-      - KEYSTONE_USER=admin@test.com
-      - KEYSTONE_PWD=1234
+      #- KEYSTONE_USER=${KEYSTONE_USER}
+      #- KEYSTONE_PWD=${KEYSTONE_PWD}
+      - APP_CLIENT_ID=${APP_CLIENT_ID}
+      - APP_URL=http://pep.docker:7000/v2/entities/
+
       - DEBUG=true
       - DB_HOST=mongo
-      - BASEDIR=/business-ecosystem-charging-backend/src
+      #- SECRET_KEY=${SECRET_KEY}
+
 networks:
     synchronicity:
         external: true

@@ -56,7 +56,7 @@ INSTALLED_APPS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '8p509oqr^68+z)y48_*pv!ceun)gu7)yw6%y9j2^0=o14)jetr'
+SECRET_KEY = environ.get('SECRET_KEY', '8p509oqr^68+z)y48_*pv!ceun)gu7)yw6%y9j2^0=o14)jetr')
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
