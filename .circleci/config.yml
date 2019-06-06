@@ -70,28 +70,28 @@ jobs:
             docker push digicatsynch/charging7:ci-$CIRCLE_BUILD_NUM
             docker push digicatsynch/charging7:${CIRCLE_BRANCH##feature/}
 
-    release-version:
-      docker:
-        - image: docker:18.01.0-ce-git
-      steps:
-        - checkout
+  release-version:
+    docker:
+      - image: docker:18.01.0-ce-git
+    steps:
+      - checkout
 
-        - setup_remote_docker
+      - setup_remote_docker
 
-        - run:
-            name: Login to docker
-            command: |
-              docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - run:
+          name: Login to docker
+          command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-        - run:
-            name: Build the docker image
-            command: |
-              docker build -t digicatsynch/charging7:${CIRCLE_TAG##v} .
+      - run:
+          name: Build the docker image
+          command: |
+            docker build -t digicatsynch/charging7:${CIRCLE_TAG##v} .
 
-        - run:
-            name: Push the docker image
-            command: |
-              docker push digicatsynch/charging7:${CIRCLE_TAG##v}
+      - run:
+          name: Push the docker image
+          command: |
+            docker push digicatsynch/charging7:${CIRCLE_TAG##v}
 workflows:
   version: 2
   logic-proxy:
