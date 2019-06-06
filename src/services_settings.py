@@ -23,3 +23,9 @@ KEYSTONE_PORT = environ.get('KEYSTONE_PORT', '3000')
 KEYSTONE_USER = environ.get('KEYSTONE_USER', 'admin@test.com')
 KEYSTONE_PWD = environ.get('KEYSTONE_PWD', '1234')
 ADMIN_DOMAIN = environ.get('ADMIN_DOMAIN', '')
+
+# App settings (e.g., Orion context broker)
+APP_CLIENT_ID =  environ.get('APP_CLIENT_ID', '')
+
+# PEP Proxy Wilma endpoint + /v2/entities
+APP_URL = environ.get('APP_URL', 'http://localhost:7000/v2/entities/')
