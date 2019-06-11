@@ -428,7 +428,7 @@ class AssetCollectionTestCase(TestCase):
         ('permission_denied', BASIC_PRODUCT, _prod_val_permission_denied, True, 403, 'Permission denied'),
         ('conflict', BASIC_PRODUCT, _prod_val_conflict, True, 409, 'Conflict'),
         ('plugin_error', BASIC_PRODUCT, _prod_val_plugin_error, True, 422, 'Plugin Error: error'),
-        ('exception', BASIC_PRODUCT, _prod_val_exception, True, 500, 'An unexpected error has occurred')
+        ('exception', BASIC_PRODUCT, _prod_val_exception, True, 500, 'Unexpected error')
     ])
     def test_validate_resource(self, name, data, side_effect=None, error=False, code=200, msg='OK'):
         views.ProductValidator = MagicMock()

@@ -6,6 +6,7 @@ fi
 
 # Download and install Python dependencies
 pip install sh
+pip install -U pyopenssl
 pip install gunicorn
 pip install "pymongo==3.4.0" "paypalrestsdk==1.11.0"
 pip install https://github.com/django-nonrel/django/archive/nonrel-1.6.zip
