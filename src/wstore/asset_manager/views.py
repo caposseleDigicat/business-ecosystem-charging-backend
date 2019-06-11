@@ -239,8 +239,8 @@ def _validate_catalog_element(request, element, validator):
         return build_response(request, 422, unicode(e))
     except PermissionDenied as e:
         return build_response(request, 403, unicode(e))
-    except:
-        return build_response(request, 500, 'An unexpected error has occurred')
+    except Exception as e:
+        return build_response(request, 500, unicode(e))
 
     return build_response(request, 200, 'OK')
 
