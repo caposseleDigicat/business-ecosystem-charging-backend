@@ -2,7 +2,7 @@ FROM python:2.7-alpine
 
 RUN apk add --no-cache \
   bash wget \
-  gcc python-dev libffi-dev musl-dev libressl-dev \
+  gcc python-dev libffi-dev musl-dev openssl-dev \
   wkhtmltopdf xvfb
 
 WORKDIR business-ecosystem-charging-backend
