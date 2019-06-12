@@ -155,12 +155,13 @@ class AssetManager:
         # Check that the download link is not already being used
         existing_assets = Resource.objects.filter(download_link=data['content'], provider=current_organization)
         is_conflict = False
-        for asset in existing_assets:
-            if asset.product_id is not None:
-                is_conflict = True
-            else:
-                asset.delete()
-
+        if 'service' not in data['metadata']:
+            for asset in existing_assets:
+                if asset.product_id is not None:
+                    is_conflict = True
+                else:
+                    asset.delete()
+        
         if is_conflict:
             raise ConflictError('The provided digital asset already exists')
 
