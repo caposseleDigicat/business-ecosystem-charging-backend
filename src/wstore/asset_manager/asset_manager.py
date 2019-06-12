@@ -155,7 +155,7 @@ class AssetManager:
         # Check that the download link is not already being used
         existing_assets = Resource.objects.filter(download_link=data['content'], provider=current_organization)
         is_conflict = False
-        if 'service' not in data['metadata']:
+        if 'metadata' in data and 'service' not in data['metadata']:
             for asset in existing_assets:
                 if asset.product_id is not None:
                     is_conflict = True
