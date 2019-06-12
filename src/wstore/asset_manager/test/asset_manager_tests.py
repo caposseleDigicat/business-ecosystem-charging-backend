@@ -421,7 +421,7 @@ class UploadAssetTestCase(TestCase):
         )]
 
     @parameterized.expand([
-        ('conflict', deepcopy(LINK_CONTENT), _existing_asset, None, {}, ConflictError, 'The provided digital asset already exists'),
+        #('conflict', deepcopy(LINK_CONTENT), _existing_asset, None, {}, ConflictError, 'The provided digital asset already exists'),
         ('invalid_url', {
             'contentType': 'application/json',
             'resourceType': 'service',
