@@ -130,4 +130,4 @@ touch /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plu
 cp /business-ecosystem-charging-backend/plugins/historicalapi-query/* /business-ecosystem-charging-backend/src/wstore/asset_manager/resource_plugins/plugins/historicalapi-query/
 
 echo "Starting charging server"
-gunicorn -b 0.0.0.0:8006 wsgi:application
+gunicorn -b 0.0.0.0:8006 --workers=1 --threads=1 wsgi:application
