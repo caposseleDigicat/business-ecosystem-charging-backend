@@ -90,14 +90,14 @@ INVENTORY_PORT=`echo $INVENTORY | grep -oE ":[0-9]+" | grep -oE "[^:/]+"`
 #INVENTORY_PATH=`DSProductInventory`
 
 echo "Testing INVENTORY APIs deployed"
-wget http://${INVENTORY_HOST}:${INVENTORY_PORT}/DSProductInventory
+wget -qO- http://${INVENTORY_HOST}:${INVENTORY_PORT}/DSProductInventory
 STATUS=$?
 I=0
 while [[ ${STATUS} -ne 0  && ${I} -lt 50 ]]; do
     echo "INVENTORY APIs not deployed yet, retrying in 5 seconds..."
 
     sleep 5
-    wget http://${INVENTORY_HOST}:${INVENTORY_PORT}/DSProductInventory
+    wget -qO- http://${INVENTORY_HOST}:${INVENTORY_PORT}/DSProductInventory
     STATUS=$?
 
     I=${I}+1
