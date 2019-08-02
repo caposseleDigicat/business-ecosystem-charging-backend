@@ -3,13 +3,17 @@
   "author": "acapossele",
   "version": "1.0",
   "module": "historical_plugin.HistoricalPlugin",
-  "media_types": ["NGSI-LD"],
-  "formats": ["URL"],
+  "media_types": [
+    "NGSIv2"
+  ],
+  "formats": [
+    "URL"
+  ],
   "overrides": [],
   "form": {
     "idPattern": {
       "type": "text",
-      "label": "idPattern (e.g., urn:ngsi-ld:OnStreetParking:santander:parking:onStreet:StaLuciaEast)",
+      "label": "idPattern (e.g., urn:ngsi:OnStreetParking:santander:parking:onStreet:StaLuciaEast)",
       "placeholder": "idPattern",
       "mandatory": true
     },
