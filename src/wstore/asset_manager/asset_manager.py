@@ -187,7 +187,8 @@ class AssetManager:
         provided_as = 'FILE'
         if 'content' in data:
             if isinstance(data['content'], str) or isinstance(data['content'], unicode):
-                self._check_url_conflict(data, current_organization)
+                #We want to allow duplicate URLs as assets
+                #self._check_url_conflict(data, current_organization)
 
                 download_link = data['content']
                 provided_as = 'URL'
